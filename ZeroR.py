@@ -1,3 +1,4 @@
+import random
 import sys
 
 ## ZeroR - our first learning algorithm.
@@ -6,14 +7,20 @@ import sys
 ### your code should get the last element in each string, which is the classification, and return the most common one.
 
 def zeroR(list_of_examples) :
-    return "zeroR" # you fix this.
+    classifications = []
+    for i in range(1, len(list_of_examples)):
+        classifications.append(list_of_examples[i].split(',')[-1])
+    return max(classifications, key=classifications.count)
 
 ### assume that list_of_examples is a list of strings. For example:
 ### ['outlook,temperature,humidity,windy,play\n', 'sunny,hot,high,FALSE,no\n', 'sunny,hot,high,TRUE,no\n', 'overcast,hot,high,FALSE,yes\n', 'rainy,mild,high,FALSE,yes\n', 'rainy,cool,normal,FALSE,yes\n', 'rainy,cool,normal,TRUE,no\n', 'overcast,cool,normal,TRUE,yes\n', 'sunny,mild,high,FALSE,no\n', 'sunny,cool,normal,FALSE,yes\n', 'rainy,mild,normal,FALSE,yes\n', 'sunny,mild,normal,TRUE,yes\n', 'overcast,mild,high,TRUE,yes\n', 'overcast,hot,normal,FALSE,yes\n', 'rainy,mild,high,TRUE,no\n']
 ### your code should get the last element in each string, which is the classification, and use random.choice() to select one and return it
 
 def randR(list_of_examples) :
-    return "randR" # you fix this.
+    classifications = []
+    for i in range(1, len(list_of_examples)):
+        classifications.append(list_of_examples[i].split(',')[-1])
+    return random.choice(classifications)
 
 
 
@@ -38,12 +45,21 @@ if __name__ == '__main__' :
     with open(fname) as f :
         data = f.readlines()
         if classify_type == "-z" :
-            print(zeroR(data))
             ## change this to use ZeroR to find the most common classification, and then
             ## compare that value to the true classification for each line to compute accuracy.
             ## (fraction of answers that are correct.)
+            correct = 0
+            for i in range(1, len(data)):
+                if zeroR(data) == data[i].split(',')[-1]:
+                    correct += 1
+            print(f"Accuracy: {correct / len(data)}")
         else :
-            print(randR(data))
             ## change this so that, for each line in the dataset, you are calling RandR to generate a prediction
             ## and comparing that to the actual classification. Use this to compute accuracy.
             ## (fraction of answers that are correct.)
+            correct = 0
+            for i in range(1, len(data)):
+                if randR(data) == data[i].split(',')[-1]:
+                    correct += 1
+            print(f"Accuracy: {correct / len(data)}")
+
