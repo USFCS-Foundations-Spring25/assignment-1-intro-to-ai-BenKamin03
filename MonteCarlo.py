@@ -1,4 +1,5 @@
 from random import randint
+from ProgressBar import progressBar
 
 # MonteCarlo.py
 # This program uses a Monte Carlo approach to estimate the probability of winning the dice game "Approach" with different
@@ -26,17 +27,30 @@ def monte_carlo_approach(n) :
     for i in range(n-5,n+1) :
         win_table[i] = 0
 
-    for hold_val in (n-5,n+1) :
-        for i in range(100000) :
-        ## you do this part. My solution is under 20 lines of code. Yours can be longer, but if it's getting
-        ## really big, take a step back and rethink.
+    for hold_val in range(n-5,n+1):
+        print(f"\nStarting simulations for hold_val = {hold_val}")
+        for i in range(100000):
+            # player 1 plays
+            player1_score = 0
+            while player1_score < hold_val:
+                player1_score += randint(1,6)
+            
+            if player1_score > n:
+                continue
 
-        ## player 1 plays
+            # player 2 plays
+            player2_score = 0
+            while player2_score <= player1_score:
+                player2_score += randint(1,6)
+            
+            if player2_score > n or player2_score <= player1_score:
+                win_table[hold_val] += 1
 
-
-        ## player 1 done. Did they exceed n?
-        ## if not, player 2 plays
-        ## player 2 > player1?
-
+            progressBar(i, 100000)
+        
+    print("\n\n")
     for item in win_table.keys() :
-        print("%d: %f" % (item, win_table[item]/1000000))
+        print("%d: %f" % (item, win_table[item]/100000))
+    
+if __name__ == "__main__":
+    monte_carlo_approach(100)
